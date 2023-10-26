@@ -1,0 +1,79 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+android {
+    compileSdkVersion 33 // Use your desired SDK version here
+
+    defaultConfig {
+        applicationId "com.example.login_page"
+        minSdkVersion 21// Minimum supported Android version
+        targetSdkVersion 30 // Target Android version
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true // Enable Multidex support
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug // Configure your signing for release
+            minifyEnabled true // Enable code shrinking (Proguard/R8)
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true // Enable ViewBinding
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        // Customize lint options if needed
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.multidex:multidex:2.0.1' // Multidex support
+    implementation 'androidx.annotation:annotation:1.3.0' // Annotation support
+    implementation 'com.android.support:appcompat-v7:28.0.0' // Use your desired version
+
+    // Add your other dependencies here
+}
+
+flutter {
+    source '../..'
+}
